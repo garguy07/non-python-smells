@@ -1,4 +1,4 @@
-# Replication Package — ML Code Smells Beyond Python
+# Replication Package: ML Code Smells Beyond Python
 
 This package accompanies the CAIN 2026 submission "ML Code Smells Beyond Python," a cross-language ML code smell catalogue extending Zhang et al.'s (CAIN 2022) Python-centric catalogue to R, Java, Scala, Julia, and C++.
 
