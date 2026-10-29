@@ -1,0 +1,42 @@
+card_id,smell_name,language,pipeline_stage,zhang_mapping_type,evidence_tier,classification
+R-01,Data Leakage via Preprocessing Before Resampling,R,Data Preparation,Variant,Strong,failure-mode
+R-02,Incomplete Reproducibility from Seed Setting Under Parallel Execution,R,Model Training,Variant,Strong,API-runtime
+R-03,Many-to-Many Join Ambiguity,R,Data Preparation,Direct Analog,Strong,syntactic
+R-04,In-Place Reference Semantics Misused (data.table),R,Data Preparation,Variant,Strong,syntactic
+R-05,Fitted Model Objects Retain Training Data/Environments by Default,R,Model Training,Variant,Strong,syntactic
+R-06,Column Data Types Inferred from Sample Not Set Explicitly,R,Data Preparation,Direct Analog,Strong,API-runtime
+R-07,Hyperparameter Silently Ignored via Wrapper Pass-Through,R,Model Training,Variant,Strong,API-runtime
+R-08,NA/NaN Comparison Confusion,R,Data Preparation,Variant,Strong,syntactic
+R-09,NA Keys Silently Match Each Other in Joins,R,Data Preparation,Variant,Strong,syntactic
+R-10,Default Classification Metric Ignores Class Probabilities,R,Model Evaluation,Direct Analog,Strong,failure-mode
+R-11,No Scaling Before Distance-Based/PCA Algorithms,R,Data Preparation,Direct Analog,Strong,failure-mode
+R-12,as.matrix() Silently Coerces Mixed-Type Data to Character,R,Data Preparation,Direct Analog,Strong,syntactic
+R-13,No Single Deterministic-Algorithm Switch Across Engines,R,Model Training,Direct Analog,Strong,API-runtime
+R-14,Invalid Value (NaN/Inf) Silently Produced Instead of Failing,R,Model Training,Direct Analog,Strong,failure-mode
+R-15,Broadcasting Feature Not Used (Inverted, Silent Vector Recycling),R,Data Preparation,Variant,Strong,syntactic
+R-17,Cross-Language (Reticulate) Seed Coordination,R,Model Training,Novel,Strong,absence-of-counterpart
+R-21,Default Classification Threshold Danger (tidymodels/probably),R,Model Evaluation,Variant,Strong,failure-mode
+R-22,data.table Chained Assignment Performance Trap (ALTREP),R,Data Preparation,Variant,Strong,syntactic
+JL-02,Silent NaN Corruption in BatchNorm from Single-Sample Batches,Julia,Model Training,Variant,Strong,API-runtime
+JL-03,NaN Propagation Without Explicit Skip,Julia,Data Preparation,Direct Analog,Strong,syntactic
+JL-04,Join Missing-Value Matching Parameter (matchmissing),Julia,Data Preparation,Variant,Strong,API-runtime
+JV-01,Inconsistent Seed Handling Across MLlib Algorithms,Java/Scala,Model Training,Variant,Strong,API-runtime
+JV-02,Incomplete Multi-Runtime Seed Coordination (PySpark),Java/Scala,Model Training,Novel,Strong,absence-of-counterpart
+JV-03,Memory Not Freed via Off-Heap/Workspace Architecture (DL4J),Java/Scala,Model Training/Evaluation,Variant,Strong,API-runtime
+JV-04,Workspace-Related Gradient/Data Corruption (DL4J),Java/Scala,Model Training,Novel,Moderate,absence-of-counterpart
+JV-05,DataType Not Explicitly Set (ND4J),Java/Scala,Data Preparation/Model Training,Variant,Strong,API-runtime
+JV-06,View vs Copy Depends on the Index (ND4J),Java/Scala,Data Preparation/Model Training,Variant,Strong,syntactic
+JV-07,Schema Mismatch Masked by a Wrapper (InputMappedClassifier, Weka),Java/Scala,Model Evaluation/Deployment,Variant,Strong,API-runtime
+JV-08,Nulls in Feature Assembly (VectorAssembler),Java/Scala,Data Preparation,Variant,Strong,API-runtime
+JV-09,Train/Test Schema Mismatch from a Refit Preprocessing Step (Weka),Java/Scala,Data Preparation,Direct Analog,Strong,failure-mode
+JV-10,Nominal Label Order Differs Between Train and Test (Weka),Java/Scala,Data Preparation/Model Evaluation,Variant,Strong,failure-mode
+JV-11,Unstabilized Input Before a Random Split (Spark randomSplit),Java/Scala,Data Preparation,Variant,Strong,failure-mode
+JV-12,Workspace Scope Misuse: Leaked/Outdated Pointer (ND4J),Java/Scala,Model Training,Novel,Strong,absence-of-counterpart
+JV-13,Shared Non-Thread-Safe Inference Handle (DJL Predictor),Java/Scala,Model Deployment/Inference,Novel,Moderate,absence-of-counterpart
+CPP-01,"Memory Not Freed, Multiple Independent Scenarios (libtorch)",C++,Model Training/Deployment,Variant,Strong,API-runtime
+CPP-02,Ignored Return Value of Device-Transfer Call,C++,Model Training/Deployment,Variant,Moderate,API-runtime
+CPP-04,Train/Eval Mode Not Toggled (libtorch),C++,Model Training/Evaluation,Direct Analog,Strong,API-runtime
+CPP-05,Static Initialization/Destruction Order Fiasco Between CUDA Context and Autograd Engine,C++,Model Training,Novel,Strong,absence-of-counterpart
+CPP-06,In-Place Operation on a Leaf Tensor Breaks Autograd (LBFGS Optimizer),C++,Model Training,Direct Analog,Moderate,syntactic
+CPP-07,torch::manual_seed() Alone Insufficient for Reproducibility (libtorch),C++,Model Training,Direct Analog,Moderate,API-runtime
+CPP-09,Silent CUDA Context Overwrite When Embedding libtorch,C++,Model Deployment/Inference,Novel,Moderate,absence-of-counterpart

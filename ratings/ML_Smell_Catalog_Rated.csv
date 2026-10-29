@@ -1,0 +1,55 @@
+card_id,language,smell_name,zhang_mapping,mapping_type,evidence_tier,pipeline_stage,rating_1,notes,rating_2,rating_3,final_disposition,resolution_reason
+R-01,R,Data Leakage via Preprocessing Before Resampling,R11,Variant,Strong,Data Preparation,include,,include,include,,
+R-02,R,Incomplete Reproducibility from Seed Setting Under Parallel Execution,R2,Variant,Strong,Model Training,include,,include,include,,
+R-03,R,Many-to-Many Join Ambiguity,R15,Near one-to-one analog,Strong,Data Preparation,include,,include,include,,
+R-04,R,In-Place Reference Semantics Misused (data.table),R16,Variant opposite direction,Strong,Data Preparation,include,,include,include,,
+R-05,R,Fitted Model Objects Retain Training Data/Environments by Default,R10,Variant,Strong,Model Training,include,,include,include,,
+R-06,R,Column Data Types Inferred from Sample Not Set Explicitly,R21,Direct analog,Strong,Data Preparation,include,,include,include,,
+R-07,R,Hyperparameter Silently Ignored via Wrapper Pass-Through,R5,Analog,Strong,Model Training,include,,include,include,,
+R-08,R,NA/NaN Comparison Confusion,R18,Direct analog richer,Strong,Data Preparation,include,,include,include,,
+R-09,R,NA Keys Silently Match Each Other in Joins,R15,Related distinct mechanism,Strong,Data Preparation,include,,include,include,,
+R-10,R,Default Classification Metric Ignores Class Probabilities,R19,Direct analog,Strong,Model Evaluation,include,,include,include,,
+R-11,R,No Scaling Before Distance-Based/PCA Algorithms,R22,Direct analog,Strong,Data Preparation,include,,include,include,,
+R-12,R,as.matrix() Silently Coerces Mixed-Type Data to Character,R14,Direct analog,Strong,Data Preparation,include,,include,include,,
+R-13,R,No Single Deterministic-Algorithm Switch Across Engines,R6,Direct analog,Strong,Model Training,discussion,Several scenarios for fixes,discussion,discussion,,
+R-14,R,Invalid Value (NaN/Inf) Silently Produced Instead of Failing,R7,Direct analog,Strong,Model Training,include,,include,include,,
+R-15,R,Broadcasting Feature Not Used (Inverted - Silent Vector Recycling),R1,Inverted,Strong,Data Preparation,include,,include,include,,
+R-16,R,Multi-Point Seed Setting Confusion,R2,Direct analog,Strong,Model Training,discussion,No general fix,exclude,discussion,Discussion-Only,"2/3 split (discussion/exclude/discussion). Moved to Discussion-Only: well-evidenced Novel smell, but no general fix exists at the package level, only a practitioner mitigation (re-validate/pin versions)."
+R-17,R,Cross-Language (Reticulate) Seed Coordination,None,Novel,Strong,Model Training,include,R+Py backend,include,include,,
+R-19,R,Train/Eval Mode API Evolution (R torch),R4,Direct analog,Moderate,Model Training,exclude,"No general fix, versioning debt, not code debt",discussion,discussion,Discussion-Only,Split (exclude/discussion/discussion). Settled as Discussion-Only rather than fully excluded or catalogued: treated as versioning debt (an API return-type change across package releases) rather than a code-level defect; borderline whether it qualifies as a code smell at all.
+R-20,R,Tensor-to-R-Object Conversion Bugs (R torch),R14,Direct analog distinct mechanism,Moderate,Data Preparation/Model Evaluation,exclude,"No general fix, versioning debt, not code debt",exclude,include,Excluded,"2/3 voted exclude (exclude/exclude/include), including the catalogue author's own deciding vote. No further substantive rationale beyond the vote itself is recorded in the source material -- flagged as a gap, not resolved further here."
+R-21,R,Default Classification Threshold Danger (tidymodels/probably),R19,Direct analog distinct mechanism,Strong,Model Evaluation,include,,include,include,,
+R-22,R,data.table Chained Assignment Performance Trap (ALTREP),R20,Direct analog different mechanism,Strong,Data Preparation,discussion,,include,include,Catalogued (Include),"Split (discussion/include/include). Kept in the catalogue: Strong evidence, no stated objection recorded against inclusion, and majority (2/3) favored include."
+JL-01,Julia,Design-Level Data Leakage Prevention (MLJ.jl),R11,Direct analog,Moderate,Data Preparation,discussion,"Not a smell, worth mentioning the severity",include,discussion,Discussion-Only,Split (discussion/include/discussion). Moved to Discussion-Only: documents the absence of a smell -- a proactive design choice (MLJ.jl's prefit/fit split) that prevents a Zhang et al. R11-type risk -- rather than a defect; retained for its severity-confirming value.
+JL-02,Julia,Silent NaN Corruption in BatchNorm from Single-Sample Batches,R7,Related different failure mode,Strong,Model Training,include,,exclude,discussion,Catalogued (Include),"3-way split (include/exclude/discussion), the only card with three different verdicts. No adjudication rationale for this specific split is recorded in the source material despite the card ending up catalogued -- flagged as an open gap, not resolved here."
+JL-03,Julia,NaN Propagation Without Explicit Skip,R7,Direct analog,Strong,Data Preparation,include,,include,include,,
+JL-04,Julia,Join Missing-Value Matching Parameter (matchmissing),R15,Direct analog opposite design,Strong,Data Preparation,discussion,"Not a smell, worth mentioning the severity",include,include,Catalogued (Include),"Split (discussion/include/include). Kept in the catalogue on majority vote despite carrying the identical 'not a smell, worth mentioning the severity' note as JL-01, which was moved to Discussion-Only instead -- the adjudication record itself flags this pairing as an unresolved inconsistency worth a deliberate call."
+JV-01,Java/Scala,Inconsistent Seed Handling Across MLlib Algorithms,R2,Direct analog variant,Strong,Model Training,include,,include,include,,
+JV-02,Java/Scala,Incomplete Multi-Runtime Seed Coordination (PySpark),None,Novel,Strong,Model Training,include,,include,exclude,Catalogued (Include),"Split (include/include/exclude). Kept on majority vote, but as a Novel card with no Python precedent and one dissenting rater, flagged for one more adversarial evidence check before submission."
+JV-03,Java,Memory Not Freed via Off-Heap/Workspace Architecture (DL4J),R10,Direct analog novel mechanism,Strong,Model Training/Evaluation,include,,include,include,,
+JV-04,Java,Workspace-Related Gradient/Data Corruption (DL4J),None,Novel,Moderate,Model Training,discussion,No general fix,discussion,discussion,Catalogued (Include),"UNANIMOUS 'discussion' verdict from all three raters (discussion/discussion/discussion) -- not a disagreement row, but flagged here because the final disposition (fully catalogued, in Table IV) contradicts that unanimous vote. No record of why it was catalogued despite three-for-three 'discussion' ratings; genuine unresolved inconsistency."
+JV-05,Java,DataType Not Explicitly Set (ND4J),R6/R21-adjacent,Different shape,Strong,Data Preparation/Model Training,include,,include,include,,
+JV-06,Java,View vs Copy Depends on the Index (ND4J),R3/R16,Loose dual-mapped,Strong,Data Preparation/Model Training,include,,include,include,,
+JV-07,Java,Schema Mismatch Masked by a Wrapper (InputMappedClassifier Weka),R7,Loose,Strong,Model Evaluation/Deployment,include,,include,include,,
+JV-08,Scala/Java,Nulls in Feature Assembly (VectorAssembler),R7,Loose,Strong,Data Preparation,include,,include,include,,
+JV-09,Java,Train/Test Schema Mismatch from a Refit Preprocessing Step (Weka),R11/R15,Direct,Strong,Data Preparation,include,,include,include,,
+JV-10,Java,Nominal Label Order Differs Between Train and Test (Weka),R6/R21,Different shape,Strong,Data Preparation/Model Evaluation,include,,include,include,,
+JV-11,Scala/Java,Unstabilized Input Before a Random Split (Spark randomSplit),R2,Adjacent,Strong,Data Preparation,include,,include,include,,
+JV-12,Java,Workspace Scope Misuse Leaked/Outdated Pointer (ND4J),None,Novel,Strong,Model Training,include,,include,include,,
+JV-13,Java,Shared Non-Thread-Safe Inference Handle (DJL Predictor),None,Novel,Moderate,Model Deployment/Inference,include,,include,include,,
+CPP-01,C++,Memory Not Freed - Multiple Independent Scenarios (libtorch),R10,Direct analog amplified,Strong,Model Training/Deployment,include,,include,include,,
+CPP-02,C++,Ignored Return Value of Device-Transfer Call,None,Severity amplification,Moderate,Model Training/Deployment,include,,include,include,,
+CPP-03,C++,Dual-ABI Silent Binary Incompatibility (libtorch),None,Novel,Strong,Deployment,exclude,,exclude,include,Excluded,"2/3 voted exclude (exclude/exclude/include), including the catalogue author's own deciding vote. No further substantive rationale beyond the vote itself is recorded in the source material -- flagged as a gap, not resolved further here."
+CPP-04,C++,Train/Eval Mode Not Toggled (libtorch),R4,Direct analog,Strong,Model Training/Evaluation,include,,include,include,,
+CPP-05,C++,Static Initialization/Destruction Order Fiasco Between CUDA Context and Autograd Engine,None,Novel,Strong,Model Training,include,,include,include,,
+CPP-06,C++,In-Place Operation on a Leaf Tensor Breaks Autograd (LBFGS Optimizer),R16,Direct analog,Moderate,Model Training,include,,include,include,,
+CPP-07,C++,torch::manual_seed() Alone Insufficient for Reproducibility (libtorch),R2,Direct analog,Moderate,Model Training,include,,include,include,,
+CPP-08,C++,Silent Numerical Divergence Between C++ and Python TorchScript Runtimes,R6,Variant novel manifestation,Moderate,Model Deployment/Inference,discussion,No general fix,discussion,exclude,Discussion-Only,"Split (discussion/discussion/exclude). Moved to Discussion-Only: no general fix confirmed at the framework level (per rating_1's note), and only single-sourced evidence (one detailed PyTorch Forums report) rather than independently corroborated evidence."
+CPP-09,C++,Silent CUDA Context Overwrite When Embedding libtorch,None,Novel,Moderate,Model Deployment/Inference,include,Too less evidence though,include,include,,
+JL-05,Julia,Type Piracy,None,excluded - general language mechanism not ML-specific,N/A,N/A,exclude,,exclude,exclude,,
+R-23,R,rbind() in a Loop,None,excluded - general R performance anti-pattern,N/A,N/A,exclude,,exclude,exclude,,
+R-24,R,Random State Changed by Loading a Package,R2,Direct analog,Strong but no actionable fix,Model Training,exclude,No fix,exclude,exclude,,
+R-25,R,Broadcasting Documentation Confusion (R torch GET TECHNICAL doc),R1,Weak-moderate,Weak,N/A,exclude,Insufficient evidence,exclude,exclude,,
+R-26,R,1-Based Indexing Dimension Drop (R torch single-element indexing),Overclaimed as novel - mirrors documented NumPy/PyTorch convention,Reframing needed,N/A,N/A,exclude,,exclude,exclude,,
+JV-14,Java,Memory Order Left Implicit - dup() Returns C Order by Default (ND4J),R20-adjacent,Low no evidence of misuse,Low,N/A,exclude,,exclude,exclude,,
+CPP-10,C++,Forward Hooks Added to Match Python Making R8 Directly Applicable,R8,Overclaimed - feature was never fully shipped per thread evidence,N/A,N/A,exclude,,exclude,exclude,,
