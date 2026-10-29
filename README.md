@@ -2,8 +2,6 @@
 
 This package accompanies the CAIN 2026 submission "ML Code Smells Beyond Python," a cross-language ML code smell catalogue extending Zhang et al.'s (CAIN 2022) Python-centric catalogue to R, Java, Scala, Julia, and C++.
 
-Its contents reflect the catalogue's state **after the 2026-10-18 inter-rater adjudication**, including the removal of R-20 and CPP-03 (recorded in adjudication as moved to Excluded, but only fully propagated out of the manuscript on 2026-10-26). The manuscript's Table 2 and this package's `catalogue/catalogue_table.csv` are mutually consistent: both report 41 cards (18 R, 3 Julia, 13 Java/Scala, 7 C++).
-
 ## Directory structure
 
 ```
