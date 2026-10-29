@@ -49,10 +49,6 @@ ratings/
 - `methodology/slr_and_adjudication.md` documents the full process that produced those 54 candidates and the reasoning that sorted them into catalogue / discussion-only / excluded.
 - `catalogue/`, `discussion_only/`, and `excluded/` are the three disjoint output sets that process produced (41 + 4 + 9 = 54, matching the ratings file).
 
-## Known open item (not resolved in this package)
-
-The Notes tab this package was built from flags one unresolved inconsistency: three cards currently filed under "excluded during earlier drafting" (JL-05, R-23, R-24) were, at the time of the rating pass, still sitting in the project's Discussion-Only set rather than fully excluded, and all three raters unanimously voted *exclude* rather than *discussion* on them. This package files them as Excluded (matching their final disposition and the raters' unanimous vote), but the underlying question — whether "discussion" in the rating scheme ever meant something different from "belongs in the paper's Discussion section" — was left open in the source material and is reproduced as-is in `methodology/slr_and_adjudication.md`, not resolved here.
-
 ## Provenance
 
 All files in this package were generated from the project's working Claude Doc ("ML Code Smells Beyond Python — Paper Draft"), specifically its Smell Catalogue, Notes, and Discussion-Only Smells tabs, plus the rating spreadsheet, as they stood after the manuscript's R-20/CPP-03 correction on 2026-10-26.
