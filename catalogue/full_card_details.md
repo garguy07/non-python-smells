@@ -580,27 +580,27 @@ Two related manifestations. (1) `prcomp()` and related PCA/SVD implementations i
 ---
 
 ## Card [JL-04]
-**Smell Name:** Join Missing-Value Matching Parameter (`matchmissing`)
+**Smell Name:**  Join Missing-Value Matching Enabled via (`matchmissing=:equal`)
 
 **Language:** Julia (DataFrames.jl)
 
-**Zhang et al. Mapping:** R15 (Merge API Parameter Not Explicitly Set) — *Direct analog, opposite default-safety design from pandas*
+**Zhang et al. Mapping:** R15 (Merge API Parameter Not Explicitly Set) — *Variant, the same hazard behind an explicit opt-in*
 
 **Pipeline Stage:** Data Preparation
 
-**Description:** DataFrames.jl added a `matchmissing` keyword to its join functions specifically to control how `missing` values behave as join keys. Unlike many permissive defaults seen elsewhere in this catalogue (including pandas' own join behavior), DataFrames.jl's default is `:error` — it throws rather than silently matching missing keys to each other, on the explicit rationale that an unknown value could match anything and therefore should not be allowed to silently match by assumption.
+**Description:** DataFrames.jl's join functions take a `matchmissing` keyword. The default, `:error`, throws when a join key is missing, because a missing value is unknown and could match anything. Passing `matchmissing=:equal` instead treats `missing` as an ordinary value, so rows with unknown keys match each other. The smell is enabling `:equal` without recognizing that unrelated rows with unknown keys will be joined, the same silent matching described by Card R-09 in R's `dplyr`.
 
-**What Differs from the Python Version, and From Most of This Catalogue:** This is a genuinely interesting reverse case for the paper: Zhang et al.'s R15 and this catalogue's own Card R-09 (NA keys silently matching in R's `dplyr`) both describe *permissive* defaults that silently allow a dangerous behavior. DataFrames.jl made the opposite design choice — safe-by-default, loud failure rather than silent danger — for the structurally identical underlying risk. Even more notably, the maintainers extended this safety-first philosophy further than most of this catalogue's "fixed" cases: even when a user explicitly requests `matchmissing=:equal` (opting in to treating missing values as matching), DataFrames.jl *still* refuses to join on `NaN` or `-0.0` present in a key column, erroring instead — an extra layer of deliberate friction the maintainer describes as chosen "for safety reasons."
+**What Differs from the Python Version, and From Most of This Catalogue:** In pandas and in R, matching missing keys is the default, so the hazard appears with no action from the user. In DataFrames.jl the user has to opt in, so the hazard is a deliberate choice that is easy to make carelessly, for example to silence the default error. The maintainers treat `:equal` as the risky mode: even under `:equal`, DataFrames.jl refuses to join on `NaN` or `-0.0` in a key column, an extra layer of friction the maintainer describes as chosen "for safety reasons."
 
-**Example:** `outerjoin(df, df_ref, on=:x)` where `:x` contains a `missing` value throws `ArgumentError: missing values in key columns are not allowed when matchmissing == :error` by default. Explicitly passing `matchmissing=:equal` to treat missing values as matching still throws a further error if `NaN` or `-0.0` appear in the same key column, requiring the user to wrap such columns in `CategoricalArrays.jl` to proceed — a deliberate, maintainer-acknowledged extra safety barrier.
+**Example (illustrative, constructed from the documented semantics, not a reported incident):** `leftjoin(orders, customers, on=:customer_id, matchmissing=:equal)` where several orders and several customers all have a missing `customer_id`. Every order with a `missing` key is matched to every customer with a `missing` key: two such orders and two such customers produce four rows. Unrelated orders are attributed to unrelated customers and the row count is inflated, with no error. With the default `matchmissing=:error`, the same call throws `ArgumentError: missing values in key columns are not allowed when matchmissing == :error`.
 
-**Fix:** Not applicable in the traditional sense — this card documents a design choice that *is* the fix, included as a comparative counterpoint showing the same R15 risk being addressed safety-first rather than permissively in a second independent ecosystem.
+**Fix:** Keep the default `:error`, or handle missing keys explicitly before joining, for example by dropping or imputing them. Use `matchmissing=:equal` only when missing keys genuinely denote the same entity.
 
 **Sources:**
 
 - [bkamins.github.io, "DataFrames.jl joins: matchmissing=:notequal"](https://bkamins.github.io/julialang/2021/06/05/notequal.html) — confirmed, maintainer-authored (Bogumił Kamiński, DataFrames.jl lead): explicitly states the `:error` default and its rationale ("missing indicates unknown value so if we knew it it could match to any of the non-missing values")
 - [bkamins.github.io, "How is equality checked in DataFrames.jl?"](https://bkamins.github.io/julialang/2023/04/14/isequal.html) — confirmed, maintainer-authored: demonstrates the extra `NaN`/`0.0` safety barrier even under `matchmissing=:equal`, with the maintainer's direct statement that this was "a decision that was made for safety reasons"
-- [DataFrames.jl issue #2650, "Add matchmissing = :notequal option"](https://github.com/JuliaData/DataFrames.jl/issues/2650) — confirmed: real design deliberation thread showing the maintainer working through benchmarks and tradeoffs before shipping the feature
+- [DataFrames.jl issue #2650, "Add matchmissing = :notequal option"](https://github.com/JuliaData/DataFrames.jl/issues/2650) — confirmed: real design deliberation thread showing the maintainer working through benchmarks and tradeoffs before shipping the feature.
 
 ---
 
